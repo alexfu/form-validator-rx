@@ -10,14 +10,8 @@ import com.alexfu.formvalidator.ValidationResult;
 import com.alexfu.formvalidator.rules.EmailRule;
 import com.alexfu.formvalidator.rules.MinLengthRule;
 import com.alexfu.formvalidator.rx.RxValidator;
-import com.jakewharton.rxbinding.widget.RxTextView;
-import com.jakewharton.rxbinding.widget.TextViewAfterTextChangeEvent;
 
-import rx.Observable;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
   private Button validateButton;
@@ -41,27 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
     validateButton.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        validator.validate()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(subscriber());
+        validator.validate().subscribe(subscriber());
       }
     });
 
     // Input validation
 
-    RxTextView.afterTextChangeEvents(firstNameInput)
-        .mergeWith(RxTextView.afterTextChangeEvents(lastNameInput))
-        .mergeWith(RxTextView.afterTextChangeEvents(emailInput))
-        .flatMap(new Func1<TextViewAfterTextChangeEvent, Observable<ValidationResult>>() {
-          @Override
-          public Observable<ValidationResult> call(TextViewAfterTextChangeEvent event) {
-            return validator.validate(event.view())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-          }
-        })
-        .subscribe(subscriber());
+    validator.observe().subscribe(subscriber());
   }
 
   private Subscriber<ValidationResult> subscriber() {
