@@ -15,7 +15,6 @@ validator.validate()
     }
 
     @Override public void onError(Throwable error) {
-
     }
 
     @Override public void onNext(ValidationResult result) {
@@ -33,7 +32,6 @@ validator.observe()
     }
 
     @Override public void onError(Throwable error) {
-
     }
 
     @Override public void onNext(ValidationResult result) {
