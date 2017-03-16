@@ -9,33 +9,16 @@ EmailRule emailRule = new EmailRule("Invalid email address.");
 
 RxValidator validator = new RxValidator();
 validator.addRule(myEditText, emailRule); // Add rules to your EditText
-validator.validate()
-  .subscribe(new Subscriber<ValidationResult>() {
+validator.observable()
+  .subscribe(new Subscriber<RxValidationEvent>() {
     @Override public void onCompleted() {
     }
 
     @Override public void onError(Throwable error) {
     }
 
-    @Override public void onNext(ValidationResult result) {
-      // Check result for each input field
-    }
-  });
-```
-
-To react to on-the-fly validations:
-
-```
-validator.observe()
-  .subscribe(new Subscriber<ValidationResult>() {
-    @Override public void onCompleted() {
-    }
-
-    @Override public void onError(Throwable error) {
-    }
-
-    @Override public void onNext(ValidationResult result) {
-      // Check result of input field
+    @Override public void onNext(RxValidationEvent event) {
+      // Do something with event
     }
   });
 ```
@@ -50,6 +33,6 @@ allprojects {
 }
 
 dependencies {
-  compile 'com.github.alexfu:form-validator-rx:0.2'
+  compile 'com.github.alexfu:form-validator-rx:1.0'
 }
 ```
