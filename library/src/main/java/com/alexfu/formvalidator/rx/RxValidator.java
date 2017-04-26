@@ -26,6 +26,14 @@ public class RxValidator {
         validator.addRule(view, rules);
     }
 
+    public void removeRule(TextView view, ValidationRule rule) {
+        validator.removeRule(view, rule);
+    }
+
+    public void removeAllRules(TextView view) {
+        validator.removeAllRules(view);
+    }
+
     public void validate() {
         validator.validate();
     }
