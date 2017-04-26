@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.1.0](https://github.com/alexfu/form-validator-rx/tree/1.1.0) (2017-04-26)
+[Full Changelog](https://github.com/alexfu/form-validator-rx/compare/1.0...1.1.0)
+
 ## [1.0](https://github.com/alexfu/form-validator-rx/tree/1.0) (2017-03-16)
 [Full Changelog](https://github.com/alexfu/form-validator-rx/compare/0.2...1.0)
 
