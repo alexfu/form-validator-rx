@@ -2,11 +2,19 @@ package com.alexfu.formvalidator.rx;
 
 import com.alexfu.formvalidator.ValidationResult;
 
-public class RxFieldValidationEvent extends RxValidationEvent {
-    public final ValidationResult result;
+public class RxFieldValidationEvent implements RxValidationEvent {
+    public final ValidationResult validationResult;
 
     public RxFieldValidationEvent(ValidationResult result) {
-        super(RxValidationState.FIELD);
-        this.result = result;
+        validationResult = result;
+    }
+
+    @Override
+    public boolean isValid() {
+        return validationResult.isValid();
+    }
+
+    public ValidationResult getValidationResult() {
+        return validationResult;
     }
 }

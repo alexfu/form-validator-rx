@@ -11,6 +11,7 @@ import com.alexfu.formvalidator.ValidationResult;
 import com.alexfu.formvalidator.rules.EmailRule;
 import com.alexfu.formvalidator.rules.MinLengthRule;
 import com.alexfu.formvalidator.rx.RxFieldValidationEvent;
+import com.alexfu.formvalidator.rx.RxFormValidationEvent;
 import com.alexfu.formvalidator.rx.RxValidationEvent;
 import com.alexfu.formvalidator.rx.RxValidationState;
 import com.alexfu.formvalidator.rx.RxValidator;
@@ -24,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private Button validateButton;
     private EditText firstNameInput, lastNameInput, emailInput;
     RxValidator validator = new RxValidator();
-    List<ValidationResult> validationErrors = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,22 +63,17 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override public void onNext(RxValidationEvent event) {
-                if (event.state == RxValidationState.BEGIN) {
-                    validationErrors.clear();
-                }
-
-                if (event.state == RxValidationState.FIELD && event instanceof RxFieldValidationEvent) {
-                    ValidationResult result = ((RxFieldValidationEvent) event).result;
+                if (event instanceof RxFieldValidationEvent) {
+                    ValidationResult result = ((RxFieldValidationEvent) event).validationResult;
                     if (result.isValid()) {
                         result.view.setError(null);
                     } else {
                         result.view.setError(result.errors.get(0));
-                        validationErrors.add(result);
                     }
                 }
 
-                if (event.state == RxValidationState.END) {
-                    if (validationErrors.isEmpty()) {
+                if (event instanceof RxFormValidationEvent) {
+                    if (event.isValid()) {
                         Toast.makeText(MainActivity.this, "Form is valid!", Toast.LENGTH_SHORT).show();
                     }
                 }

@@ -6,6 +6,7 @@ import com.alexfu.formvalidator.ValidationResult;
 import com.alexfu.formvalidator.Validator;
 import com.alexfu.formvalidator.rules.ValidationRule;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Emitter;
@@ -46,16 +47,21 @@ public class RxValidator {
         return Observable.fromEmitter(new Action1<Emitter<RxValidationEvent>>() {
             @Override public void call(final Emitter<RxValidationEvent> emitter) {
                 validator.setCallback(new Validator.Callback() {
+                    private final List<ValidationResult> validationErrors = new ArrayList<>();
+
                     @Override public void onFieldValidated(ValidationResult result) {
+                        if (!result.isValid()) {
+                            validationErrors.add(result);
+                        }
                         emitter.onNext(new RxFieldValidationEvent(result));
                     }
 
                     @Override public void onBeginFormValidation() {
-                        emitter.onNext(new RxValidationEvent(RxValidationState.BEGIN));
+                        validationErrors.clear();
                     }
 
                     @Override public void onFormValidated() {
-                        emitter.onNext(new RxValidationEvent(RxValidationState.END));
+                        emitter.onNext(new RxFormValidationEvent(validationErrors.isEmpty(), validationErrors));
                     }
                 });
             }
