@@ -44,7 +44,7 @@ public class RxValidator {
     }
 
     public Observable<RxValidationEvent> observable() {
-        return Observable.fromEmitter(new Action1<Emitter<RxValidationEvent>>() {
+        return Observable.create(new Action1<Emitter<RxValidationEvent>>() {
             @Override public void call(final Emitter<RxValidationEvent> emitter) {
                 validator.setCallback(new Validator.Callback() {
                     private final List<ValidationResult> validationErrors = new ArrayList<>();
